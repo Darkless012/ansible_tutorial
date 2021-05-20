@@ -1,0 +1,10 @@
+### Custom rules
+!*.yml.example
+external_vars.yml
+hosts.yml
+
+### Ansible
+*.retry
+
+### JetBrains
+.idea

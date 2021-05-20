@@ -1,0 +1,28 @@
+# Apply to all hosts
+# Basic Server Hardening!
+all:
+  hosts:
+    # Apply ONLY Basic hardening on hosts below
+    myserver.lan:
+      ansible_host: localhost
+      ansible_port: 2222
+      ansible_user: root
+      ansible_ssh_private_key_file: ~/.ssh/id_rsa
+      ansible_python_interpreter: /usr/bin/python3
+
+  # Specific servers
+  children:
+    # Apply BOTH Basic hardening and "test_app" tasks on hosts below
+    test_app:
+      hosts:
+        # Virtual server
+        myanothervirtualserver.lan:
+          ansible_host: localhost
+          ansible_port: 2222
+          ansible_user: root
+          ansible_ssh_private_key_file: ~/.ssh/id_rsa
+          ansible_python_interpreter: /usr/bin/python3
+
+    postgresdb:
+      hosts:
+        myserver.lan:

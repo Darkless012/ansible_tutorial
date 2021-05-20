@@ -1,0 +1,18 @@
+---
+################################################################################
+# Run Ansible playbook
+#  ansible-playbook -i hosts.yml playbook.yml --ask-become-pass --check --diff
+################################################################################
+
+################################################################################
+- name: Global server configuration and hardening
+  hosts: all
+  become: yes
+  vars_files:
+    - vars/all/external_vars.yml
+  tasks:
+  - include: tasks/all/hostname.yml
+  handlers:
+  - include: handlers.yml
+  tags:
+    - basic
