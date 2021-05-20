@@ -1,0 +1,10 @@
+
+- name: Create example container
+  community.docker.docker_container:
+    name: myapp
+    image: crccheck/hello-world
+    state: started
+    recreate: yes
+    container_default_behavior: "no_defaults"
+    published_ports:
+      - "80:8000"

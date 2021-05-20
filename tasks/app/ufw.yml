@@ -1,0 +1,17 @@
+- name: Allow HTTP trafic to be routed to DOCKER
+  ufw:
+    rule: allow
+    port: '80'
+    proto: tcp
+    route: yes
+  notify:
+    - restart ufw
+
+# - name: Allow HTTPS trafic to be routed to DOCKER
+#   ufw:
+#     rule: allow
+#     port: '443'
+#     proto: tcp
+#     route: yes
+#   notify:
+#     - restart ufw

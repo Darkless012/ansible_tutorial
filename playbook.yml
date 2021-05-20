@@ -1,5 +1,7 @@
 ---
 ################################################################################
+# Install required roles:
+#  ansible-galaxy install -r requirements.yml
 # Run Ansible playbook
 #  ansible-playbook -i hosts.yml playbook.yml --ask-become-pass --check --diff
 ################################################################################
@@ -11,8 +13,49 @@
   vars_files:
     - vars/all/external_vars.yml
   tasks:
+  # Set Hostname and Host File
   - include: tasks/all/hostname.yml
+  # System Updates
+  - include: tasks/all/system_updates.yml
+  # Create Non-root User, Disable Root User, Configure SSH settings
+  - include: tasks/all/lockdown_root.yml
+  # Firewall setup
+  - include: tasks/all/ufw.yml
+  # Set Locale and Timezone
+  - include: tasks/all/timezone.yml
+  # Sysctl.conf
+  - include: tasks/all/sysctl.yml
+  # Secure Shared Memory
+  - include: tasks/all/secure_shared_memory.yml
+  # Install Fail2Ban
+  - include: tasks/all/fail2ban.yml
   handlers:
   - include: handlers.yml
   tags:
     - basic
+
+################################################################################
+- name: "Install docker from geerlingguy"
+  hosts: docker
+  become: yes
+  vars_files:
+    - vars/all/external_vars.yml
+  roles:
+    - geerlingguy.pip
+    - geerlingguy.docker
+  tags:
+    - docker
+
+################################################################################
+- name: "Install docker test app"
+  hosts: test_app
+  become: yes
+  vars_files:
+    - vars/all/external_vars.yml
+  tasks:
+  - include: tasks/app/app.yml
+  - include: tasks/app/ufw.yml
+  handlers:
+  - include: handlers.yml
+  tags:
+    - test_app

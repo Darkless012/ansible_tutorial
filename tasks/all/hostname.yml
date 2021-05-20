@@ -9,10 +9,19 @@
     mode: 0644
 
 - name: Issue hostname command
-  hostname: name={{ inventory_hostname }}
+  hostname:
+    name: "{{ inventory_hostname }}"
 
 - name: Add hostname entries to hosts file (localhost)
-  lineinfile: dest=/etc/hosts regexp="^127.0.0.1" line="127.0.0.1 localhost" state=present
+  lineinfile:
+    dest: /etc/hosts
+    regexp: "^127.0.0.1"
+    line: "127.0.0.1 localhost"
+    state: present
 
 - name: Add hostname entries to hosts file (network ip)
-  lineinfile: dest=/etc/hosts regexp="^{{ ansible_default_ipv4.address }}" line="{{ ansible_default_ipv4.address }} {{ inventory_hostname }}" state=present
+  lineinfile:
+    dest: /etc/hosts
+    regexp: "^{{ ansible_default_ipv4.address }}"
+    line: "{{ ansible_default_ipv4.address }} {{ inventory_hostname }}"
+    state: present
